@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-const SignUpLink = ({ darkMode}) => {
+const SignUpLink = ({ darkMode, handleGo}) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -12,13 +12,14 @@ const SignUpLink = ({ darkMode}) => {
               darkMode ? "text-gray-400" : "text-gray-600"
             }`}>
               Don't have an account?{' '}
-              <a 
-                href="#" 
-                className={`font-medium transition-colors ${
+              <a
+                
+                className={`font-medium transition-colors hover:cursor-pointer ${
                   darkMode 
                     ? "text-indigo-400 hover:text-indigo-300" 
                     : "text-indigo-600 hover:text-indigo-500"
                 }`}
+                onClick={handleGo}
               >
                 Sign up
               </a>
