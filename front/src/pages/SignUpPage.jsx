@@ -12,6 +12,7 @@ import SignUpButton from '../componenets/signeupComponenets/SignUpButton';
 import LoginLink from '../componenets/signeupComponenets/LoginLink';
 import { calculatePasswordStrength } from '../utils/caclulatePasswordStrength';
 import { validateForm } from '../utils/validateSignUpForm';
+import { signUp } from '../utils/signUp';
 
 const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -96,22 +97,24 @@ const SignupPage = () => {
     navigate('/login');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     
-    const errors = validateForm(formData);
+    const errors = validateForm(formData, passwordStrength);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      // Here you would typically redirect to dashboard or verification page
-      console.log('Signup successful', formData);
-    }, 2000);
+    const response  = await signUp(formData.firstName, formData.lastName, formData.email, formData.password)
+    if( response.error) {
+      alert(response.error.message)
+    }else{
+      alert("User created successfully")
+    }
+    setIsLoading(false);
+   
   };
 
   const togglePasswordVisibility = () => {
