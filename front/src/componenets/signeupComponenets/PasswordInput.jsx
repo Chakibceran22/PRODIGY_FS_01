@@ -45,7 +45,7 @@ const PasswordInputSignUp = ({ darkMode, formData,handleChange, formErrors, togg
           <div className="mt-2">
             <div className="flex items-center justify-between mb-1">
               <div className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Password strength:</div>
-              <div className="text-xs font-medium" style={{ color: getStrengthColor().replace('bg-', 'text-') }}>
+              <div className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-500"}`} style={{ color: getStrengthColor().replace('bg-', 'text-') }}>
                 {getStrengthLabel()}
               </div>
             </div>

@@ -1,4 +1,4 @@
-export const validateForm = (formData) => {
+export const validateForm = (formData, passwordStrength) => {
     const errors = {};
     
     if (!formData.firstName.trim()) {
