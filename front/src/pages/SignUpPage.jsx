@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { UserPlus, Loader2, Mail, Lock, CheckCircle, Info, Github, Facebook, Eye, EyeOff, Moon, Sun } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ToggleButton from '../componenets/ToggleButton';
 import SignUpHeader from '../componenets/signeupComponenets/SignUpHeader';
@@ -9,6 +8,11 @@ import EmailInput from '../componenets/EmailInput';
 import PasswordInputSignUp from '../componenets/signeupComponenets/PasswordInput';
 import ConfirmPassword from '../componenets/signeupComponenets/ConfimPassword';
 import TermsOfCondition from '../componenets/signeupComponenets/TermsOfCondition';
+import SignUpButton from '../componenets/signeupComponenets/SignUpButton';
+import LoginLink from '../componenets/signeupComponenets/LoginLink';
+import { calculatePasswordStrength } from '../utils/caclulatePasswordStrength';
+import { validateForm } from '../utils/validateSignUpForm';
+
 const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -49,7 +53,7 @@ const SignupPage = () => {
 
     // Calculate password strength if password field is changed
     if (name === 'password') {
-      calculatePasswordStrength(value);
+      calculatePasswordStrength(value, setPasswordStrength);
     }
 
     // Check password confirmation match
@@ -73,17 +77,7 @@ const SignupPage = () => {
     }
   };
 
-  const calculatePasswordStrength = (password) => {
-    let strength = 0;
-    
-    if (password.length >= 8) strength += 1;
-    if (/[A-Z]/.test(password)) strength += 1;
-    if (/[a-z]/.test(password)) strength += 1;
-    if (/[0-9]/.test(password)) strength += 1;
-    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-    
-    setPasswordStrength(strength);
-  };
+
 
   const getStrengthColor = () => {
     if (passwordStrength <= 1) return 'bg-red-500';
@@ -97,44 +91,7 @@ const SignupPage = () => {
     return 'Strong';
   };
 
-  const validateForm = () => {
-    const errors = {};
-    
-    if (!formData.firstName.trim()) {
-      errors.firstName = 'First name is required';
-    }
-    
-    if (!formData.lastName.trim()) {
-      errors.lastName = 'Last name is required';
-    }
-    
-    if (!formData.email) {
-      errors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Email is invalid';
-    }
-    
-    if (!formData.password) {
-      errors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters';
-    } else if (passwordStrength < 3) {
-      errors.password = 'Password is too weak';
-    }
-    
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
-    }
-    
-    if (!formData.agreeTerms) {
-      errors.agreeTerms = 'You must agree to the terms and conditions';
-    }
-    
-    return errors;
-  };
-
+  
   const goLogin = () => {
     navigate('/login');
   };
@@ -142,15 +99,13 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const errors = validateForm();
+    const errors = validateForm(formData);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     
     setIsLoading(true);
-    
-    
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
@@ -205,48 +160,12 @@ const SignupPage = () => {
               <TermsOfCondition darkMode={darkMode} formData={formData} formErrors={formErrors} handleChange={handleChange} />
               
               {/* Signup Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="pt-2"
-              >
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`w-full ${
-                    darkMode 
-                      ? "bg-indigo-600 hover:bg-indigo-700" 
-                      : "bg-indigo-600 hover:bg-indigo-700"
-                  } text-white font-medium py-3 px-4 rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70`}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
-                      Creating account...
-                    </div>
-                  ) : (
-                    "Create Account"
-                  )}
-                </button>
-              </motion.div>
+              <SignUpButton darkMode={darkMode} isLoading={isLoading} />
             </div>
           </form>
         
           {/* Login Link */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="mt-8 text-center"
-          >
-            <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-              Already have an account?{' '}
-              <a onClick={goLogin} className="font-medium text-indigo-500 hover:text-indigo-400 hover:cursor-pointer">
-                Sign in
-              </a>
-            </p>
-          </motion.div>
+          <LoginLink darkMode={darkMode} goLogin={goLogin} />
         </div>
       </motion.div>
     </div>
