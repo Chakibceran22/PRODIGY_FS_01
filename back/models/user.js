@@ -2,9 +2,14 @@ import { Schema } from "mongoose";
 import mongoose from "mongoose";
 import {hashPasswordBeforeSave} from '../middleware/hashingBeforeSave.js'
 const userSchema = new Schema ( {
-    username: {
+    firstname: {
         type: String,
         required: true,
+    },
+    lastname:{
+        type: String,
+        required: true,
+
     },
     email: {
         type: String,
