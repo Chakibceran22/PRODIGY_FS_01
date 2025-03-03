@@ -11,7 +11,7 @@ const LoginButton = ({darkMode, isLoading}) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 relative overflow-hidden ${
+                  className={`w-full bg-indigo-600 cursor-pointer hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 ${
                     darkMode ? "focus:ring-offset-gray-800" : ""
                   }`}
                 >

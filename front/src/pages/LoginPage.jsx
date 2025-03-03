@@ -7,11 +7,13 @@ import PasswordInput from '../componenets/PasswordInput';
 import RememberMe from '../componenets/RememberMe';
 import LoginButton from '../componenets/LoginButton';
 import SignUpLink from '../componenets/SignUpLink';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -60,6 +62,9 @@ const LoginPage = () => {
     
     return errors;
   };
+  const goSignUp = () => {
+    navigate('/signup')
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -117,7 +122,7 @@ const LoginPage = () => {
           </form>
           
           {/* Sign Up Link */}
-          <SignUpLink darkMode={darkMode}/>
+          <SignUpLink darkMode={darkMode} handleGo={goSignUp}/>
         </div>
       </motion.div>
     </div>
